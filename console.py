@@ -107,7 +107,7 @@ class HBNBCommand(cmd.Cmd):
         destroy instances
         'destroy User 123'
         '''
-        if (self.error_handler(arg, 2) == 1):
+        if (self.error_handler(args, 2) == 1):
             return
         a = args.split(" ")
         ret_i = storage.all()
@@ -126,7 +126,7 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print([str(x) for x in all_lst.values()])
             return
-        if (self.error_handler(arg, 1) == 1):
+        if (self.error_handler(args, 1) == 1):
             return
         a = args.split(" ")
         print([str(y) for y in all_lst.values()
