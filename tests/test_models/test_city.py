@@ -16,7 +16,7 @@ class TestUser(unittest.TestCase):
         test base case
         '''
         new_a = City()
-        self.assertTrue(issubclass(new_a, BaseModel))
+        self.assertTrue(issubclass(City, BaseModel))
         new_a.name = "betty"
         new_a.my_number = 12
         self.assertEqual([new_a.name, new_a.my_number], ["betty", 12])
@@ -59,7 +59,7 @@ class TestUser(unittest.TestCase):
         a5_dict['__class__'] = "City"
         a5_dict['created_at'] = a5_dict['created_at'].isoformat()
         a5_dict['updated_at'] = a5_dict['updated_at'].isoformat()
-        self.assertEqual(a5_dict, a_5.to_dict)
+        self.assertEqual(a5_dict, a_5.to_dict())
 
     def test_str(self):
         '''

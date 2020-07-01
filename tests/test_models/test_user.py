@@ -61,7 +61,7 @@ class TestUser(unittest.TestCase):
         u5_dict['__class__'] = "User"
         u5_dict['created_at'] = u5_dict['created_at'].isoformat()
         u5_dict['updated_at'] = u5_dict['updated_at'].isoformat()
-        self.assertEqual(u5_dict, user_5.to_dict)
+        self.assertEqual(u5_dict, user_5.to_dict())
 
     def test_str(self):
         '''
@@ -80,6 +80,3 @@ class TestUser(unittest.TestCase):
         self.assertEqual(type(User.password), str)
         self.assertEqual(type(User.first_name), str)
         self.assertEqual(type(User.last_name), str)
-
-if __name__ = "__main__":
-    unittest.main()

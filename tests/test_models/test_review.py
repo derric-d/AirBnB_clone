@@ -16,7 +16,7 @@ class TestUser(unittest.TestCase):
         test base case
         '''
         new_a = Review()
-        self.assertTrue(issubclass(new_a, BaseModel))
+        self.assertTrue(issubclass(Review, BaseModel))
         new_a.name = "betty"
         new_a.my_number = 12
         self.assertEqual([new_a.name, new_a.my_number], ["betty", 12])
@@ -60,14 +60,14 @@ class TestUser(unittest.TestCase):
         a5_dict['__class__'] = "Review"
         a5_dict['created_at'] = a5_dict['created_at'].isoformat()
         a5_dict['updated_at'] = a5_dict['updated_at'].isoformat()
-        self.assertEqual(a5_dict, a_5.to_dict)
+        self.assertEqual(a5_dict, a_5.to_dict())
 
     def test_str(self):
         '''
         test str rep of base
         '''
         a_6 = Review()
-        a6_str = "[Amenity] ({}) {}".format(a_6.id, a_6.__dict__)
+        a6_str = "[Review] ({}) {}".format(a_6.id, a_6.__dict__)
         self.assertEqual(a6_str, str(a_6))
 
     def test_attr(self):
