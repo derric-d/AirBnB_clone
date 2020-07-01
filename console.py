@@ -47,7 +47,7 @@ class HBNBCommand(cmd.Cmd):
         for i in range(len(a)):
             if a[i][0] == '"':
                 a[i] = a[i].replace('"', '')
-        key = "{}.{}".format(a[i])
+        key = "{}.{}".format(a[0], a[1])
         if n_args >= 2 and key not in storage.all():  # need to give valid id
             print(err_lst[3])
             return 1
