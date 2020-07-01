@@ -16,7 +16,7 @@ class TestUser(unittest.TestCase):
         test base case
         '''
         new_p = Place()
-        self.assertTrue(issubclass(new_a, BaseModel))
+        self.assertTrue(issubclass(Place, BaseModel))
         new_p.name = "betty"
         new_p.my_number = 12
         self.assertEqual([new_p.name, new_p.my_number], ["betty", 12])
@@ -41,7 +41,7 @@ class TestUser(unittest.TestCase):
 
         self.assertTrue(hasattr(new_a, "latitude"))
         self.assertTrue(hasattr(new_a, "longitude"))
-        self.assertTrue(hasattr(new_a, "amenity_id"))
+        self.assertTrue(hasattr(new_a, "amenity_ids"))
 
     def test_user_id(self):
         '''
@@ -70,7 +70,7 @@ class TestUser(unittest.TestCase):
         a5_dict['__class__'] = "Place"
         a5_dict['created_at'] = a5_dict['created_at'].isoformat()
         a5_dict['updated_at'] = a5_dict['updated_at'].isoformat()
-        self.assertEqual(a5_dict, a_5.to_dict)
+        self.assertEqual(a5_dict, a_5.to_dict())
 
     def test_str(self):
         '''
@@ -85,7 +85,7 @@ class TestUser(unittest.TestCase):
         test amenity attributes --just name as str
         '''
         self.assertEqual(type(Place.name), str)
-        self.assertEqual(type(Place.name), city_id)
+        self.assertEqual(type(Place.city_id), str)
 
         self.assertEqual(type(Place.user_id), str)
         self.assertEqual(type(Place.description), str)
@@ -97,6 +97,3 @@ class TestUser(unittest.TestCase):
         self.assertEqual(type(Place.latitude), float)
         self.assertEqual(type(Place.longitude), float)
         self.assertEqual(type(Place.amenity_ids), list)
-
-if __name__ == "__main__":
-    unittest.main()

@@ -47,7 +47,7 @@ class TestBaseModel(unittest.TestCase):
         m4_dict['__class__'] = "BaseModel"
         m4_dict['created_at'] = m4_dict['created_at'].isoformat()
         m4_dict['updated_at'] = m4_dict['updated_at'].isoformat()
-        self.assertEqual(m4_dict, model_4.to_dict)
+        self.assertEqual(m4_dict, model_4.to_dict())
 
     def test_str(self):
         '''

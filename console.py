@@ -8,10 +8,7 @@ from models.city import City
 from models.review import Review
 from models.amenity import Amenity
 from models.city import City
-'''
-likely still need:
 from models import storage
-'''
 
 
 class HBNBCommand(cmd.Cmd):
@@ -22,15 +19,51 @@ class HBNBCommand(cmd.Cmd):
 
     '''
     need to do error handling:
-
-    ERRORS:
-    "** class name missing **",
-    "** class doesn't exist **",
-    "** instance id missing **",
-    "** no instance found **",
-    "** attribute name missing **",
-    "** value missing **"
     '''
+    def error_handler(self, args, n_args):
+        '''show errors'''
+        cls_lst = ["BaseModel", "User",
+                   "Place", "State",
+                   "City", "Amenity", "Review"]
+        err_lst = ["** class name missing **",
+                   "** class doesn't exist **",
+                   "** instance id missing **",
+                   "** no instance found **",
+                   "** attribute name missing **",
+                   "** value missing **"]
+
+        if not args:  # have class name
+            print(err_lst[0])
+            return 1
+        a = args.split(" ")
+        if n_args >= 1 and a[0] not in cls_lst:  # name in list
+            print(err_lst[1])
+            return 1
+        elif n_args == 1:
+            return 0
+        if n_args >= 2 and len(a) < 2:  # need to give id for instance
+            print(err_lst[2])
+            return 1
+        for i in range(len(a)):
+            if a[i][0] == '"':
+                a[i] = a[i].replace('"', '')
+        key = "{}.{}".format(a[i])
+        if n_args >= 2 and key not in storage.all():  # need to give valid id
+            print(err_lst[3])
+            return 1
+        elif n_args == 2:
+            return 0
+        if n_args >= 4 and len(a) < 3:
+            print(err_lst[4])
+            return 1
+        if n_args >= 4 and len(a) < 4:
+            print(err_lst[5])
+            return 1
+        return 0
+
+    def emptyline(self):
+        '''enables emmptyline'''
+        pass
 
     def do_quit(self, arg):
         '''quit interpreter with str(quit)'''
@@ -46,9 +79,11 @@ class HBNBCommand(cmd.Cmd):
         create <cls_name>
         musyt print instance.id
         '''
+        if (self.error_handler(arg, 1) == 1):
+            return
         a = arg.split(" ")
         # get a valid input from cmd: cls name
-        inst = a[0]
+        inst = eval(a[0])()
 
         inst.save()   # save is base model method
         print(inst.id)
@@ -59,6 +94,8 @@ class HBNBCommand(cmd.Cmd):
         lookup with cls name & id
         'show User 123'
         '''
+        if (self.error_handler(args, 2) == 1):
+            return
         a = args.split(" ")
         ret_inst = storage.all()
         key = "{}.{}".format(a[0], a[1])
@@ -70,6 +107,8 @@ class HBNBCommand(cmd.Cmd):
         destroy instances
         'destroy User 123'
         '''
+        if (self.error_handler(arg, 2) == 1):
+            return
         a = args.split(" ")
         ret_i = storage.all()
         key = "{}.{}".format(a[0], a[1])
@@ -84,8 +123,10 @@ class HBNBCommand(cmd.Cmd):
         '''
         # retrive all from db
         all_lst = storage.all()
-        if not arg:
+        if not args:
             print([str(x) for x in all_lst.values()])
+            return
+        if (self.error_handler(arg, 1) == 1):
             return
         a = args.split(" ")
         print([str(y) for y in all_lst.values()
@@ -98,15 +139,33 @@ class HBNBCommand(cmd.Cmd):
         lookup with name & id and pass attr to update and value to give
         'update User 123 name 'Betty'
         '''
+        if (self.error_handler(args, 4) == 1):
+            return
         a = args.split(" ")
         # parse class and attributes and set them
         ret_l = storage.all()
         key = "{}.{}".format(a[0], a[1])
-        '''
         for i in range(len(a[1:]) + 1):
-            print(args[i][0])
-        '''
-        # parse and set attr.
+            if a[i][0] == '"':
+                a[i] = a[i].replace('"', '')
+        u_k = a[2]  # update key
+        u_v = a[3]  # update value
+        try:
+            if u_v.isdigit():
+                u_v = int(u_v)
+            elif float(u_v):
+                u_v = float(u_v)
+        except ValueError:
+            pass
+        c_att = type(ret_l[key]).__dict__
+        if u_k in c_att.keys():
+            try:
+                u_v = type(c_att[u_k])(u_v)
+            except Exception:
+                print("Invalid type for value")
+                return
+        setattr(storage.all()[key], u_k, u_v)
+        storage.save()
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
