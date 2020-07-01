@@ -79,3 +79,20 @@ class TestFileStorage(unittest.TestCase):
                              {key: val.to_dict()
                                  for key, val in
                                  FileStorage().all().items()})
+
+    def testRelaod(self):
+        '''
+        test reload() data can be saved to and loadedfrom json
+        '''
+        f = storage._FileStorage__file_path
+        self.assertFalse(os.path.exists(f))
+        storage.reload()
+        self.assertFalse(storage.all())
+        new_base1 = BaseModel()
+        storage.save()
+        self.assertTrue(os.path.exists(f))
+        with open(f, "r") as file:
+            loaded_json = json.load(file)
+        cmp_json = {key: val.to_dict()
+                    for key, val in storage.all().items()}
+        self.assertEqual(cmp_json, loaded_json)
