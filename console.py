@@ -47,7 +47,7 @@ class HBNBCommand(cmd.Cmd):
         for i in range(len(a)):
             if a[i][0] == '"':
                 a[i] = a[i].replace('"', '')
-        key = "{}.{}".format(a[i])
+        key = "{}.{}".format(a[0], a[1])
         if n_args >= 2 and key not in storage.all():  # need to give valid id
             print(err_lst[3])
             return 1
@@ -107,7 +107,7 @@ class HBNBCommand(cmd.Cmd):
         destroy instances
         'destroy User 123'
         '''
-        if (self.error_handler(arg, 2) == 1):
+        if (self.error_handler(args, 2) == 1):
             return
         a = args.split(" ")
         ret_i = storage.all()
@@ -126,7 +126,7 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print([str(x) for x in all_lst.values()])
             return
-        if (self.error_handler(arg, 1) == 1):
+        if (self.error_handler(args, 1) == 1):
             return
         a = args.split(" ")
         print([str(y) for y in all_lst.values()
